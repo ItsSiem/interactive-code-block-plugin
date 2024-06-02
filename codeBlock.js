@@ -10,6 +10,9 @@ class CodeBlock extends HTMLElement {
         'https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.26.1/min/vs/editor/editor.main.nls.js',
         'https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.26.1/min/vs/editor/editor.main.js',
       ];
+      this.cssImports = [
+        'https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.26.1/min/vs/editor/editor.main.min.css'
+      ];
     }
   
     connectedCallback() {
@@ -237,43 +240,54 @@ class CodeBlock extends HTMLElement {
       output.innerText = result;
     }
   
-    loadMonacoResources() {
-      const requireConfig = document.createElement('script');
-      requireConfig.innerHTML = `var require = { paths: { 'vs': 'https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.26.1/min/vs' } };`;
-      this.shadowRoot.appendChild(requireConfig);
-  
-      // Loader function for the resources
-      const loadResource = (resource) => {
-        return new Promise((resolve, reject) => {
-          const node = resource.endsWith('.css') ? document.createElement('link') : document.createElement('script');
-          if (resource.endsWith('.css')) {
-            node.rel = 'stylesheet';
-            node.href = resource
-          } else {
-            node.src = resource;
-          }
-          node.onload = resolve;
-          node.onerror = reject;
-          this.shadowRoot.appendChild(node);
-        });
-      }
-  
-      // Loop and load the resources but wait for each to finish before loading the next
-      // This is neccessary because the Monaco editor requires the resources to be loaded in a specific order
-      this.imports.reduce((promise, resource) => {
-        return promise.then(() => loadResource(resource));
-      }, Promise.resolve())
-        .then(() => {
-          if (window.monaco) {
+    
+  loadMonacoResources() {
+    // Load CSS dynamically
+    this.loadCSSResources(this.cssImports)
+      .then(() => {
+        // Load Monaco resources
+        this.loadJSResources(this.imports)
+          .then(() => {
             this.initializeMonacoEditor();
-          } else {
-            window.require(['vs/editor/editor.main'], () => {
-              this.initializeMonacoEditor();
-            });
-          }
-        })
-        .catch((error) => console.error('Failed to load Monaco Editor:', error));
-    }
+          })
+          .catch(error => console.error('Failed to load Monaco Editor JS:', error));
+      })
+      .catch(error => console.error('Failed to load Monaco Editor CSS:', error));
+  }
+
+  loadCSSResources(urls) {
+    return Promise.all(urls.map(url => {
+      return new Promise((resolve, reject) => {
+        const link = document.createElement('link');
+        link.rel = 'stylesheet';
+        link.type = 'text/css';
+        link.href = url;
+        link.onload = resolve;
+        link.onerror = reject;
+        this.shadowRoot.appendChild(link);
+      });
+    }));
+  }
+
+  loadJSResources(urls) {
+    return new Promise((resolve, reject) => {
+      const loadResource = (url) => {
+        return new Promise((res, rej) => {
+          const script = document.createElement('script');
+          script.src = url;
+          script.onload = res;
+          script.onerror = rej;
+          this.shadowRoot.appendChild(script);
+        });
+      };
+
+      urls.reduce((prev, url) => {
+        return prev.then(() => loadResource(url));
+      }, Promise.resolve())
+        .then(resolve)
+        .catch(reject);
+    });
+  }
   
     initializeMonacoEditor() {
       console.log('Monaco Editor initialized');
