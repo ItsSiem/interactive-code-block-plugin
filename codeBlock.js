@@ -10,9 +10,6 @@ class CodeBlock extends HTMLElement {
         'https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.26.1/min/vs/editor/editor.main.nls.js',
         'https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.26.1/min/vs/editor/editor.main.js',
       ];
-      this.cssImports = [
-        'https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.26.1/min/vs/editor/editor.main.min.css'
-      ];
     }
   
     connectedCallback() {
@@ -243,16 +240,16 @@ class CodeBlock extends HTMLElement {
     
   loadMonacoResources() {
     // Load CSS dynamically
-    this.loadCSSResources(this.cssImports)
-      .then(() => {
+    // this.loadCSSResources(this.cssImports)
+    //   .then(() => {
         // Load Monaco resources
         this.loadJSResources(this.imports)
           .then(() => {
             this.initializeMonacoEditor();
           })
           .catch(error => console.error('Failed to load Monaco Editor JS:', error));
-      })
-      .catch(error => console.error('Failed to load Monaco Editor CSS:', error));
+      //})
+      //.catch(error => console.error('Failed to load Monaco Editor CSS:', error));
   }
 
   loadCSSResources(urls) {
