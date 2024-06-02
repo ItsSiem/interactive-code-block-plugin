@@ -5,7 +5,7 @@ export default class SyntaxCheckerPlugin extends Plugin {
 	async onload() {
 		const script = document.createElement("script");
 		script.type = "module";
-		script.src = "https://cdn.jsdelivr.net/gh/TeunvdKleij/interactive-code-block-plugin/codeBlock.js"
+		script.src = "https://cdn.jsdelivr.net/gh/teunvdkleij/interactive-code-block-plugin@latest/codeBlockLink.js"
 		//script.src = "https://cdn.jsdelivr.net/gh/windesheim-hbo-ict/deeltaken@latest/CodeBlock/codeBlock.js";
 		document.head.appendChild(script);
 		
