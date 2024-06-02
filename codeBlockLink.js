@@ -5,10 +5,10 @@ class CodeBlock extends HTMLElement {
         mode: 'open'
       });
       this.imports = [
-        'https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.26.1/min/vs/editor/editor.main.min.css',
-        'https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.26.1/min/vs/loader.min.js',
-        'https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.26.1/min/vs/editor/editor.main.nls.js',
-        'https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.26.1/min/vs/editor/editor.main.js',
+        'https://cdn.jsdelivr.net/gh/teunvdkleij/interactive-code-block-plugin@latest/editor.main.min.css',
+        'https://cdn.jsdelivr.net/gh/teunvdkleij/interactive-code-block-plugin@latest/loader.min.js',
+        'https://cdn.jsdelivr.net/gh/teunvdkleij/interactive-code-block-plugin@latest/editor.main.nls.js',
+        'https://cdn.jsdelivr.net/gh/teunvdkleij/interactive-code-block-plugin@latest/editor.main.js',
       ];
     }
   
