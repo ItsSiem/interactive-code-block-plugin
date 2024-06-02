@@ -9,6 +9,9 @@ class CodeBlock extends HTMLElement {
         'https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.26.1/min/vs/editor/editor.main.nls.js',
         'https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.26.1/min/vs/editor/editor.main.js',
       ];
+      this.cssImports = [
+        'https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.26.1/min/vs/editor/editor.main.min.css'
+      ];
     }
   
     connectedCallback() {
