@@ -5,8 +5,7 @@ export default class SyntaxCheckerPlugin extends Plugin {
 	async onload() {
 		const script = document.createElement("script");
 		script.type = "module";
-		script.src = "https://cdn.jsdelivr.net/gh/teunvdkleij/interactive-code-block-plugin@latest/codeBlockLink.js"
-		//script.src = "https://cdn.jsdelivr.net/gh/windesheim-hbo-ict/deeltaken@latest/CodeBlock/codeBlock.js";
+		script.src = "https://cdn.jsdelivr.net/gh/windesheim-hbo-ict/deeltaken@latest/CodeBlock/codeBlockLite.js"
 		document.head.appendChild(script);
 		
 		this.registerMarkdownPostProcessor((element, context) => {
@@ -16,7 +15,6 @@ export default class SyntaxCheckerPlugin extends Plugin {
 				const language = codeblock.className.split("-")[1];
 				const code = codeblock.innerHTML;
 				element.innerHTML = `<code-block language=${language}>${code}</code-block>`;
-				console.log(`codeblock ${i}: ${language}, ${code}`);
 			}
 		});
 	}
